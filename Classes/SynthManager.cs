@@ -1,48 +1,40 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 
-public class SynthManager : MonoBehaviour
+public class SynthManager
 {
-    protected float attackRate;
-    protected float decayRate;
-    protected float sustainRate;
-    protected float releaseRate;
+    private GameObject gameObject;
 
-    protected float attackVolume;
-    protected float decayVolume;
-    protected float sustainVolume;
+    private static SynthManager m_Instance;
 
-    public void SetAttackRate(float rate)
+    public static SynthManager Instance
     {
-        attackRate = rate;
+        get
+        {
+            if (m_Instance == null)
+            {
+                m_Instance = new SynthManager
+                {
+                    gameObject = new GameObject("SynthManager")
+                };
+
+                m_Instance.gameObject.AddComponent<SynthParameters>();
+            }
+            return m_Instance;
+        }
     }
 
-    public void SetDecayRate(float rate)
+    private SynthParameters m_SyntheParameters;
+    public SynthParameters SynthParameters
     {
-        decayRate = rate;
+        get
+        {
+            if(m_SyntheParameters == null)
+            {
+                m_SyntheParameters = gameObject.GetComponent<SynthParameters>();
+            }
+            return m_SyntheParameters;
+        }
     }
 
-    public void SetSustainRate(float rate)
-    {
-        sustainRate = rate;
-    }
-
-    public void SetReleaseRate(float rate)
-    {
-        releaseRate = rate;
-    }
-
-    public void SetAttackVolume(float volume)
-    {
-        attackVolume = volume;
-    }
-
-    public void SetDecayVolume(float volume)
-    {
-        decayVolume = volume;
-    }
-
-    public void SetSustainVolume(float volume)
-    {
-        sustainVolume = volume;
-    }
 }

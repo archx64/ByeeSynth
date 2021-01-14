@@ -9,20 +9,19 @@ public class Envelope
             // Attack
             amp = Mathf.Lerp(amp, maxAmp, ar * Time.deltaTime);
         }
-        else if (t <= (at + dt))
+        else if (t > at && t < (at + dt))
         {
             // Decay
             amp = Mathf.Lerp(amp, decayAmp, dr * Time.deltaTime);
         }
-        else if (t <= (at + dt + st))
+        else if (t >= (at + dt) && t < (at + dt + st))
         {
             // Sustain
             amp = Mathf.Lerp(amp, susAmp, sr * Time.deltaTime);
         }
-
-        else
+        else //if (t >= (at + dt + st))
         {
-
+            amp = Mathf.Lerp(amp, 0, sr * Time.deltaTime);
         }
         return amp;
     }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
-public class Synth : SynthManager
+public class Synth : MonoBehaviour
 {
     private readonly int samplingFrequency = 48000;
     private float increment;
@@ -15,14 +15,49 @@ public class Synth : SynthManager
     private readonly Note note = new Note();
     private readonly Envelope envelope = new Envelope();
 
+    private SynthParameters synthParameters;
+    //private bool isPlaying;
+
+    private void Awake()
+    {
+        synthParameters = SynthManager.Instance.SynthParameters;
+    }
+
+    public void IsPressed()
+    {
+
+    }
+
+    public void IsReleased()
+    {
+
+    }
+
     private void FixedUpdate()
     {
         bool isPlaying = Input.GetKey(KeyCode.Space);
-        Debug.Log(notePressedTime);
+
+
+        // Debug.Log(attackRate);
+
         if (isPlaying)
         {
             notePressedTime += Time.deltaTime;
-            gain = envelope.ADSR(0.1f, 0.08f, 0.04f, 0.5f, 0.2f, 1, 1, 1, 0.2f, notePressedTime, gain);
+
+            //gain = envelope.ADSR(0.1f, 0.08f, 0.04f, 0.5f, 0.2f, 1, 1, 1, 0.2f, notePressedTime, gain);
+            gain = envelope.ADSR(
+                synthParameters.attackVolume, 
+                synthParameters.decayVolume,
+                synthParameters.sustainVolume, 
+                synthParameters.attackTime, 
+                synthParameters.decayTime, 
+                synthParameters.sustainTime, 
+                synthParameters.attackRate, 
+                synthParameters.decayRate, 
+                synthParameters.sustainRate, 
+                notePressedTime, 
+                gain
+                );
         }
         else
         {

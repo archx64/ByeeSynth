@@ -2,8 +2,11 @@
 
 public class Note
 {
+    private readonly float semiToneRatio = Mathf.Pow(2, 1 / 12);
+
     public float Frequency(int power)
     {
-        return 440 * Mathf.Pow(1.0594630943593f, power);
+        
+        return 440 * Mathf.Pow(semiToneRatio, power);
     }
 }

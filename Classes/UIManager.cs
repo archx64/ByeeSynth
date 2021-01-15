@@ -3,10 +3,17 @@
 public class UIManager : MonoBehaviour
 {
     private SynthParameters synthParameters;
+    private GameObject panel;
+    private Vector3 panelPosition;
+    private bool movedPanel;
 
     private void Awake()
     {
-        synthParameters = SynthManager.Instance.SynthParameters;
+        if (synthParameters == null)
+        {
+            synthParameters = SynthManager.Instance.SynthParameters;
+        }
+
         synthParameters.attackVolume = 0.1f;
         synthParameters.decayVolume = 0.08f;
         synthParameters.sustainVolume = 0.04f;
@@ -16,12 +23,47 @@ public class UIManager : MonoBehaviour
         synthParameters.attackRate = 1;
         synthParameters.decayRate = 1;
         synthParameters.sustainRate = 0.2f;
+        panel = GameObject.FindWithTag("Panel");
     }
 
-    private void Start()
+
+    public void MovePanel()
+    {
+        movedPanel = !movedPanel;
+    }
+
+
+    private void LerpPanel()
     {
 
+        if (!panel)
+        {
+            return;
+        }
+
+        if (movedPanel)
+        {
+            panelPosition = Vector3.Lerp(panelPosition, Vector3.up * 500, 5 * Time.deltaTime);
+            panel.transform.localPosition = panelPosition;
+        }
+        else
+        {
+            panelPosition = Vector3.Lerp(panelPosition, Vector3.zero, 5 * Time.deltaTime);
+            panel.transform.localPosition = panelPosition;
+        }
     }
+
+
+    private void Update()
+    {
+        LerpPanel();
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
+
 
     public void SetAttackRate(float rate)
     {
@@ -71,5 +113,10 @@ public class UIManager : MonoBehaviour
     public void SetSustainVolume(float volume)
     {
         synthParameters.sustainVolume = volume;
+    }
+
+    public void SetWaveType(float type)
+    {
+        synthParameters.waveType = Mathf.RoundToInt(type);
     }
 }

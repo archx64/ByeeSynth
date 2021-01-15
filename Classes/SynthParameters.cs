@@ -15,16 +15,18 @@ public class SynthParameters : MonoBehaviour
     public float decayVolume;
     public float sustainVolume;
 
+    public int waveType;
+
     private void Update()
     {
-        //    if(decayVolume > attackVolume)
-        //    {
-        //        decayVolume = attackVolume;
-        //    }
+        if (decayVolume > attackVolume)
+        {
+            decayVolume = attackVolume;
+        }
 
-        //    if(sustainVolume > attackVolume)
-        //    {
-        //        sustainVolume = attackVolume;
-        //    }
+        if (sustainVolume > attackVolume)
+        {
+            sustainVolume = attackVolume;
+        }
     }
 }

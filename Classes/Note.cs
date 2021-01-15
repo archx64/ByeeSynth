@@ -2,11 +2,23 @@
 
 public class Note
 {
-    private readonly float semiToneRatio = Mathf.Pow(2, 1 / 12);
+    private readonly float semiToneRatio = 1.05946309436f;
 
-    public float Frequency(int power)
+    public float Frequency(int power, int offset)
     {
-        
-        return 440 * Mathf.Pow(semiToneRatio, power);
+        float frequency = 220 * Mathf.Pow(semiToneRatio, power);
+
+        if (offset >= 0)
+        {
+            frequency *= Mathf.Pow(2, offset);
+            return frequency;
+        }
+        else
+        {
+            offset = Mathf.Abs(offset);
+            frequency *= Mathf.Pow(0.5f, offset);
+            return frequency;
+        }
+
     }
 }

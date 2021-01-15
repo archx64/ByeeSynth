@@ -8,15 +8,18 @@ public class Synth : MonoBehaviour
     private float phase;
     private float notePressedTime;
 
-    [SerializeField] int wavetype = 0;
+    private int wavetype;
 
-    private  float gain = 0f;
+    [SerializeField] int semiTone = 0;
+    [SerializeField] int offset = 0;
+
+    private float gain = 0f;
 
     private readonly Note note = new Note();
     private readonly Envelope envelope = new Envelope();
 
     private SynthParameters synthParameters;
-    //private bool isPlaying;
+    private bool isPlaying;
 
     private void Awake()
     {
@@ -25,37 +28,32 @@ public class Synth : MonoBehaviour
 
     public void IsPressed()
     {
-
+        isPlaying = true;
     }
 
     public void IsReleased()
     {
-
+        isPlaying = false;
     }
 
     private void FixedUpdate()
     {
-        bool isPlaying = Input.GetKey(KeyCode.Space);
-
-
-        // Debug.Log(attackRate);
-
+        wavetype = synthParameters.waveType;
         if (isPlaying)
         {
             notePressedTime += Time.deltaTime;
 
-            //gain = envelope.ADSR(0.1f, 0.08f, 0.04f, 0.5f, 0.2f, 1, 1, 1, 0.2f, notePressedTime, gain);
             gain = envelope.ADSR(
-                synthParameters.attackVolume, 
+                synthParameters.attackVolume,
                 synthParameters.decayVolume,
-                synthParameters.sustainVolume, 
-                synthParameters.attackTime, 
-                synthParameters.decayTime, 
-                synthParameters.sustainTime, 
-                synthParameters.attackRate, 
-                synthParameters.decayRate, 
-                synthParameters.sustainRate, 
-                notePressedTime, 
+                synthParameters.sustainVolume,
+                synthParameters.attackTime,
+                synthParameters.decayTime,
+                synthParameters.sustainTime,
+                synthParameters.attackRate,
+                synthParameters.decayRate,
+                synthParameters.sustainRate,
+                notePressedTime,
                 gain
                 );
         }
@@ -69,7 +67,7 @@ public class Synth : MonoBehaviour
 
     private void OnAudioFilterRead(float[] data, int channels)
     {
-        increment = note.Frequency(0) * 2 * Mathf.PI / samplingFrequency;
+        increment = note.Frequency(semiTone, offset) * 2 * Mathf.PI / samplingFrequency;
 
         for (int i = 0; i < data.Length; i += channels)
         {
@@ -112,3 +110,5 @@ public class Synth : MonoBehaviour
         }
     }
 }
+
+//gain = envelope.ADSR(0.1f, 0.08f, 0.04f, 0.5f, 0.2f, 1, 1, 1, 0.2f, notePressedTime, gain);

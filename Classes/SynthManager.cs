@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SynthManager
 {
@@ -19,6 +18,7 @@ public class SynthManager
                 };
 
                 m_Instance.gameObject.AddComponent<SynthParameters>();
+                m_Instance.gameObject.AddComponent<SceneLoader>();
             }
             return m_Instance;
         }
@@ -29,7 +29,7 @@ public class SynthManager
     {
         get
         {
-            if(m_SyntheParameters == null)
+            if (m_SyntheParameters == null)
             {
                 m_SyntheParameters = gameObject.GetComponent<SynthParameters>();
             }
@@ -37,4 +37,16 @@ public class SynthManager
         }
     }
 
+    private SceneLoader m_SceneLoader;
+    public SceneLoader SceneLoader
+    {
+        get
+        {
+            if (m_SceneLoader == null)
+            {
+                m_SceneLoader = gameObject.GetComponent<SceneLoader>();
+            }
+            return m_SceneLoader;
+        }
+    }
 }
